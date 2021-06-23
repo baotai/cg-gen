@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cg.system.mapper.UserMapper">
+
+    <resultMap id="BaseResultMap" type="com.cg.entity.pojo.system.User">
+        <result column="id" property="id" />
+        <result column="username" property="username" />
+        <result column="password" property="password" />
+        <result column="salt" property="salt" />
+        <result column="mobile" property="mobile" />
+        <result column="email" property="email" />
+        <result column="deleted" property="deleted" />
+        <result column="cg_created_by" property="cgCreatedDy" />
+        <result column="cg_created" property="cgCreated" />
+        <result column="cg_modified_by" property="cgModifiedBy" />
+        <result column="cg_modified" property="cgModified" />
+    </resultMap>
+
+    <!-- 表字段 -->
+    <sql id="baseColumns">
+         `id`,`username`,`password`,`salt`,`mobile`,`email`
+         ,`deleted`,`cg_created_by`,`cg_created`,`cg_modified_by`,`cg_modified`
+    </sql>
+
+    <select id="findByKeyword" resultMap="BaseResultMap" parameterType="Map">
+        select
+            <include refid="baseColumns" />
+        from `cg_system_users`
+        where `username` like concat('%',#{paramsMap.keyword},'%')
+            and `email`like concat('%',#{paramsMap.keyword},'%')
+            and `deleted` = 0
+        order by cg_modified desc limit #{paramsMap.startNum}, #{paramsMap.pageSize}
+    </select>
+
+    <select id="countRows" resultType="Integer">
+        select count(1) from `cg_system_users`
+        where `username` like concat('%',#{paramsMap.keyword},'%')
+            and `email`like concat('%',#{paramsMap.keyword},'%')
+            and `deleted` = 0
+    </select>
+
+    <select id="findByUsername" resultMap="BaseResultMap" parameterType="Map">
+        select
+            <include refid="baseColumns" />
+        from `cg_system_users`
+        where username = #{paramsMap.username} limit 1
+    </select>
+
+    <select id="getByUsernameAndPassword" resultMap="BaseResultMap" parameterType="Map">
+        select
+            <include refid="baseColumns" />
+        from `cg_system_users`
+        where username = #{paramsMap.username} and password = #{paramsMap.password} limit 1
+    </select>
+
+    <update id="updateByUsername" parameterType="com.cg.entity.pojo.system.User">
+        update `cg_system_users` set
+            <if test="username != null and username != ''">
+                `username`=#{username},
+            </if>
+            <if test="mobile != null and mobile != ''">
+                `mobile`=#{mobile},
+            </if>
+            <if test="email != null and email != ''">
+                `email`=#{email},
+            </if>
+            <if test="deleted != null">
+                `deleted`=#{deleted},
+            </if>
+            <if test="cgModifiedBy != null and cgModifiedBy != ''">
+                `cg_modified_by`=#{cgModifiedBy},
+            </if>
+            <if test="cgModified != null">
+                `cg_modified`=#{cgModified},
+            </if>
+            `id` = #{id}
+        where username = #{username} and `deleted` = 0
+    </update>
+
+    <insert id="save" parameterType="com.cg.entity.pojo.system.User">
+        insert into `cg_system_users`(`username`,`password`,`salt`,`mobile`,`email`
+         ,`deleted`,`cg_created_by`,`cg_created`,`cg_modified_by`,`cg_modified`)
+        values (#{username},#{password},#{salt},#{mobile},#{email},
+        #{deleted},#{cgCreatedDy},#{cgCreated},#{cgModifiedBy},#{cgModified})
+    </insert>
+
+</mapper>
