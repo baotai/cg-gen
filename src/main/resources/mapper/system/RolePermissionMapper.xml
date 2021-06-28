@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cg.system.mapper.RolePermissionMapper">
+
+    <resultMap id="BaseResultMap" type="com.cg.entity.pojo.system.RolePermission">
+        <result column="id" property="id" />
+        <result column="role_id" property="roleId" />
+        <result column="permission_id" property="permissionId" />
+        <result column="deleted" property="deleted" />
+        <result column="cg_created_by" property="cgCreatedBy" />
+        <result column="cg_created" property="cgCreated" />
+        <result column="cg_modified_by" property="cgModifiedBy" />
+        <result column="cg_modified" property="cgModified" />
+    </resultMap>
+
+    <!-- 表字段 -->
+    <sql id="baseColumns">
+         `id`,`role_id`,`permission_id`,`deleted`,`cg_created_by`,`cg_created`,`cg_modified_by`,`cg_modified`
+    </sql>
+
+    <select id="findByRoleId" resultMap="BaseResultMap" parameterType="Map">
+        select
+        <include refid="baseColumns" />
+        from `cg_system_role_permission`
+        where `role_id` = #{paramsMap.roleId}
+    </select>
+
+    <update id="updateById" parameterType="com.cg.entity.pojo.system.RolePermission">
+        update `cg_system_role_permission` set
+            <if test="deleted != null">
+                `deleted`=#{deleted},
+            </if>
+            <if test="cgModifiedBy != null and cgModifiedBy != ''">
+                `cg_modified_by`=#{cgModifiedBy},
+            </if>
+            <if test="cgModified != null">
+                `cg_modified`=#{cgModified},
+            </if>
+            `id` = #{id}
+        where `id` = #{id}
+    </update>
+
+    <insert id="save" parameterType="com.cg.entity.pojo.system.RolePermission">
+        insert into
+        `cg_system_role_permission`(`role_id`,`permission_id`,`deleted`,`cg_created_by`,`cg_created`,`cg_modified_by`,`cg_modified`)
+        values (#{roleId},#{permissionId},#{deleted},#{cgCreatedBy},#{cgCreated},#{cgModifiedBy},#{cgModified})
+    </insert>
+
+</mapper>

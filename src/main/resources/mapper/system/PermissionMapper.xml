@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cg.system.mapper.PermissionMapper">
+
+    <resultMap id="BaseResultMap" type="com.cg.entity.pojo.system.Permission">
+        <result column="id" property="id" />
+        <result column="name" property="name" />
+        <result column="permission_desc" property="desc" />
+        <result column="url" property="url" />
+        <result column="deleted" property="deleted" />
+        <result column="cg_created_by" property="cgCreatedBy" />
+        <result column="cg_created" property="cgCreated" />
+        <result column="cg_modified_by" property="cgModifiedBy" />
+        <result column="cg_modified" property="cgModified" />
+    </resultMap>
+
+    <!-- 表字段 -->
+    <sql id="baseColumns">
+         `id`,`name`,`permission_desc`,`url`,`deleted`,`cg_created_by`,`cg_created`,`cg_modified_by`,`cg_modified`
+    </sql>
+
+    <select id="findByKeyword" resultMap="BaseResultMap" parameterType="Map">
+        select
+            <include refid="baseColumns" />
+        from `cg_system_permissions`
+        where
+            <if test="paramsMap.keyword != null and paramsMap.keyword != ''">
+                `name` like concat('%',#{paramsMap.keyword},'%') or
+                `url` like concat('%',#{paramsMap.keyword},'%') or
+                `permission_desc` like concat('%',#{paramsMap.keyword},'%') and
+            </if>
+            `deleted` = 0
+        order by cg_modified desc limit #{paramsMap.startNum}, #{paramsMap.pageSize}
+    </select>
+
+    <select id="countRows" resultType="Integer">
+        select count(1)
+        from `cg_system_permissions`
+        where
+            <if test="paramsMap.keyword != null and paramsMap.keyword != ''">
+                `name` like concat('%',#{paramsMap.keyword},'%') or
+                `url` like concat('%',#{paramsMap.keyword},'%') or
+                `permission_desc` like concat('%',#{paramsMap.keyword},'%') and
+            </if>
+            `deleted` = 0
+    </select>
+
+    <select id="findByName" resultMap="BaseResultMap" parameterType="Map">
+        select
+            <include refid="baseColumns" />
+        from `cg_system_permissions`
+        where `name` = #{paramsMap.name} and `deleted` = 0
+    </select>
+
+    <select id="findOne" resultMap="BaseResultMap" parameterType="Map">
+        select
+            <include refid="baseColumns" />
+        from `cg_system_permissions`
+        where
+            <if test="paramsMap.name != null and paramsMap.name != ''">
+                `name` = #{paramsMap.name} and
+            </if>
+            <if test="paramsMap.id != null and paramsMap.id != 0">
+                `id` = #{paramsMap.id} and
+            </if>
+           `deleted` = 0 limit 1
+    </select>
+
+    <select id="findByIdList" resultMap="BaseResultMap" parameterType="List">
+        select
+            <include refid="baseColumns" />
+        from `cg_system_permissions`
+        where `id` in
+            <foreach collection="list" open="(" close=")" separator="," item="item">
+                #{item}
+            </foreach>
+        and `deleted` = 0
+    </select>
+
+    <update id="updateById" parameterType="com.cg.entity.pojo.system.Permission">
+        update `cg_system_permissions` set
+            <if test="name != null and name != ''">
+                `name` = #{name},
+            </if>
+            <if test="desc != null and desc != ''">
+                `permission_desc` = #{desc},
+            </if>
+            <if test="deleted != null">
+                `deleted`=#{deleted},
+            </if>
+            <if test="cgModifiedBy != null and cgModifiedBy != ''">
+                `cg_modified_by`=#{cgModifiedBy},
+            </if>
+            <if test="cgModified != null">
+                `cg_modified`=#{cgModified},
+            </if>
+            `id` = #{id}
+        where `id` = #{id} and `deleted` = 0
+    </update>
+
+    <insert id="save" parameterType="com.cg.entity.pojo.system.Permission">
+        insert into
+        `cg_system_permissions`(`name`,`permission_desc`,`url`,`deleted`,`cg_created_by`,`cg_created`,`cg_modified_by`,`cg_modified`)
+        values
+        (#{name},#{desc},#{url},#{deleted},#{cgCreatedBy},#{cgCreated},#{cgModifiedBy},#{cgModified})
+    </insert>
+
+</mapper>

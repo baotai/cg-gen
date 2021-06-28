@@ -10,7 +10,7 @@ public abstract class BaseDO implements Serializable {
 
     private Long id;
     private Byte deleted;
-    private String cgCreatedDy;
+    private String cgCreatedBy;
     private Date cgCreated;
     private String cgModifiedBy;
     private Date cgModified;
@@ -35,12 +35,12 @@ public abstract class BaseDO implements Serializable {
         this.deleted = deleted;
     }
 
-    public String getCgCreatedDy() {
-        return cgCreatedDy;
+    public String getCgCreatedBy() {
+        return cgCreatedBy;
     }
 
-    public void setCgCreatedDy(String cgCreatedDy) {
-        this.cgCreatedDy = cgCreatedDy;
+    public void setCgCreatedBy(String cgCreatedBy) {
+        this.cgCreatedBy = cgCreatedBy;
     }
 
     public Date getCgCreated() {
@@ -74,7 +74,7 @@ public abstract class BaseDO implements Serializable {
         BaseDO baseDO = (BaseDO) o;
         return Objects.equals(id, baseDO.id) &&
                 Objects.equals(deleted, baseDO.deleted) &&
-                Objects.equals(cgCreatedDy, baseDO.cgCreatedDy) &&
+                Objects.equals(cgCreatedBy, baseDO.cgCreatedBy) &&
                 Objects.equals(cgCreated, baseDO.cgCreated) &&
                 Objects.equals(cgModifiedBy, baseDO.cgModifiedBy) &&
                 Objects.equals(cgModified, baseDO.cgModified);
@@ -82,7 +82,7 @@ public abstract class BaseDO implements Serializable {
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, deleted, cgCreatedDy, cgCreated, cgModifiedBy, cgModified);
+        return Objects.hash(id, deleted, cgCreatedBy, cgCreated, cgModifiedBy, cgModified);
     }
 
     @Override
@@ -90,7 +90,7 @@ public abstract class BaseDO implements Serializable {
         return "BaseDO{" +
                 "id=" + id +
                 ", deleted=" + deleted +
-                ", cgCreatedDy='" + cgCreatedDy + '\'' +
+                ", cgCreatedBy='" + cgCreatedBy + '\'' +
                 ", cgCreated=" + cgCreated +
                 ", cgModifiedBy='" + cgModifiedBy + '\'' +
                 ", cgModified=" + cgModified +

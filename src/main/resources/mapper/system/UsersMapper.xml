@@ -11,12 +11,11 @@
         <result column="mobile" property="mobile" />
         <result column="email" property="email" />
         <result column="deleted" property="deleted" />
-        <result column="cg_created_by" property="cgCreatedDy" />
+        <result column="cg_created_by" property="cgCreatedBy" />
         <result column="cg_created" property="cgCreated" />
         <result column="cg_modified_by" property="cgModifiedBy" />
         <result column="cg_modified" property="cgModified" />
     </resultMap>
-
     <!-- 表字段 -->
     <sql id="baseColumns">
          `id`,`username`,`password`,`salt`,`mobile`,`email`
@@ -27,34 +26,51 @@
         select
             <include refid="baseColumns" />
         from `cg_system_users`
-        where `username` like concat('%',#{paramsMap.keyword},'%')
-            and `email`like concat('%',#{paramsMap.keyword},'%')
-            and `deleted` = 0
+        where
+            <if test="paramsMap.keyword != null and paramsMap.keyword != ''">
+                `username` like concat('%',#{paramsMap.keyword},'%') or
+                `email` like concat('%',#{paramsMap.keyword},'%') and
+            </if>
+            `deleted` = 0
         order by cg_modified desc limit #{paramsMap.startNum}, #{paramsMap.pageSize}
     </select>
 
     <select id="countRows" resultType="Integer">
-        select count(1) from `cg_system_users`
-        where `username` like concat('%',#{paramsMap.keyword},'%')
-            and `email`like concat('%',#{paramsMap.keyword},'%')
-            and `deleted` = 0
+        select count(1)
+        from `cg_system_users`
+        where
+            <if test="paramsMap.keyword != null and paramsMap.keyword != ''">
+                `username` like concat('%',#{paramsMap.keyword},'%') or
+                `email` like concat('%',#{paramsMap.keyword},'%') and
+            </if>
+            `deleted` = 0
     </select>
 
     <select id="findByUsername" resultMap="BaseResultMap" parameterType="Map">
         select
             <include refid="baseColumns" />
         from `cg_system_users`
-        where username = #{paramsMap.username} limit 1
+        where `username` = #{paramsMap.username} and `deleted` = 0
     </select>
 
-    <select id="getByUsernameAndPassword" resultMap="BaseResultMap" parameterType="Map">
+    <select id="findOne" resultMap="BaseResultMap" parameterType="Map">
         select
             <include refid="baseColumns" />
         from `cg_system_users`
-        where username = #{paramsMap.username} and password = #{paramsMap.password} limit 1
+        where
+            <if test="paramsMap.username != null and paramsMap.username != ''">
+                `username` = #{paramsMap.username} and
+            </if>
+            <if test="paramsMap.password != null and paramsMap.password != ''">
+                `password` = #{paramsMap.password} and
+            </if>
+            <if test="paramsMap.id != null and paramsMap.id != 0">
+                `id` = #{paramsMap.id} and
+            </if>
+           `deleted` = 0 limit 1
     </select>
 
-    <update id="updateByUsername" parameterType="com.cg.entity.pojo.system.User">
+    <update id="updateById" parameterType="com.cg.entity.pojo.system.User">
         update `cg_system_users` set
             <if test="username != null and username != ''">
                 `username`=#{username},
@@ -75,14 +91,14 @@
                 `cg_modified`=#{cgModified},
             </if>
             `id` = #{id}
-        where username = #{username} and `deleted` = 0
+        where `id` = #{id} and `deleted` = 0
     </update>
 
     <insert id="save" parameterType="com.cg.entity.pojo.system.User">
         insert into `cg_system_users`(`username`,`password`,`salt`,`mobile`,`email`
          ,`deleted`,`cg_created_by`,`cg_created`,`cg_modified_by`,`cg_modified`)
         values (#{username},#{password},#{salt},#{mobile},#{email},
-        #{deleted},#{cgCreatedDy},#{cgCreated},#{cgModifiedBy},#{cgModified})
+        #{deleted},#{cgCreatedBy},#{cgCreated},#{cgModifiedBy},#{cgModified})
     </insert>
 
 </mapper>

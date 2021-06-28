@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cg.system.mapper.UserRoleMapper">
+
+    <resultMap id="BaseResultMap" type="com.cg.entity.pojo.system.UserRole">
+        <result column="id" property="id" />
+        <result column="user_id" property="userId" />
+        <result column="role_id" property="roleId" />
+        <result column="deleted" property="deleted" />
+        <result column="cg_created_by" property="cgCreatedBy" />
+        <result column="cg_created" property="cgCreated" />
+        <result column="cg_modified_by" property="cgModifiedBy" />
+        <result column="cg_modified" property="cgModified" />
+    </resultMap>
+
+    <!-- 表字段 -->
+    <sql id="baseColumns">
+         `id`,`user_id`,`role_id`,`deleted`,`cg_created_by`,`cg_created`,`cg_modified_by`,`cg_modified`
+    </sql>
+
+    <select id="findByUserId" resultMap="BaseResultMap" parameterType="Map">
+        select
+        <include refid="baseColumns" />
+        from `cg_system_user_role`
+        where `user_id` = #{paramsMap.userId}
+    </select>
+
+    <select id="findByUserIdAndRoleId" resultMap="BaseResultMap" parameterType="Map">
+        select
+        <include refid="baseColumns" />
+        from `cg_system_user_role`
+        where `user_id` = #{paramsMap.userId} and `role_id` = #{paramsMap.roleId} limit 1
+    </select>
+
+    <update id="updateById" parameterType="com.cg.entity.pojo.system.UserRole">
+        update `cg_system_user_role` set
+            <if test="deleted != null">
+                `deleted`=#{deleted},
+            </if>
+            <if test="cgModifiedBy != null and cgModifiedBy != ''">
+                `cg_modified_by`=#{cgModifiedBy},
+            </if>
+            <if test="cgModified != null">
+                `cg_modified`=#{cgModified},
+            </if>
+            `id` = #{id}
+        where `id` = #{id}
+    </update>
+
+    <insert id="save" parameterType="com.cg.entity.pojo.system.UserRole">
+        insert into
+        `cg_system_user_role`(`user_id`,`role_id`,`deleted`,`cg_created_by`,`cg_created`,`cg_modified_by`,`cg_modified`)
+        values (#{userId},#{roleId},#{deleted},#{cgCreatedBy},#{cgCreated},#{cgModifiedBy},#{cgModified})
+    </insert>
+
+</mapper>
