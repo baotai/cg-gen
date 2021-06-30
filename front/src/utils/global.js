@@ -23,8 +23,8 @@ Object.assign(Vue.prototype, {
     const that = this
     client.post(uri, data).then(function(response) {
       const resp = response.data
-      const code = resp.code
-      if (code === '0') { // 成功
+      const code = resp.status
+      if (code === 200) { // 成功
         callback && callback.call(that, resp)
       } else {
         that.$message.error(resp.msg)
@@ -33,6 +33,18 @@ Object.assign(Vue.prototype, {
       console.error(error)
       errorCallback && errorCallback(error)
       that.$message.error(error.message)
+    })
+  },
+  get: function(uri, data, callback, errorCallback) {
+    const that = this
+    client.get(uri, data).then(function (response) {
+      const resp = response.data
+      const code = resp.status
+      if (code === 200) { // 成功
+        callback && callback.call(that, resp)
+      } else {
+        that.$message.error(resp.msg)
+      }
     })
   },
   /**

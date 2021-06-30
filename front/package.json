@@ -25,6 +25,7 @@
     "js-md5": "^0.7.3",
     "jszip": "^3.6.0",
     "mavon-editor": "^2.9.1",
+    "moment": "^2.29.1",
     "normalize.css": "^7.0.0",
     "npm": "^6.14.13",
     "nprogress": "^0.2.0",

@@ -35,6 +35,9 @@ Vue.use(ElementUI, { locale })
 
 Vue.config.productionTip = false
 
+import Moment from 'moment'
+Vue.prototype.$moment = Moment
+
 new Vue({
   el: '#app',
   router,

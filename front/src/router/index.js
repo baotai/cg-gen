@@ -56,19 +56,19 @@ export const constantRoutes = [
       {
         path: '/user',
         name: 'User',
-        component: () => import('@/views/dashboard/index'),
+        component: () => import('@/views/system/User'),
         meta: { title: '用户管理', icon: 'dashboard' }
       },
       {
         path: '/role',
         name: 'Role',
-        component: () => import('@/views/dashboard/index'),
+        component: () => import('@/views/system/Role'),
         meta: { title: '角色管理', icon: 'dashboard' }
       },
       {
         path: '/permission',
         name: 'Permission',
-        component: () => import('@/views/dashboard/index'),
+        component: () => import('@/views/system/Permission'),
         meta: { title: '权限管理', icon: 'dashboard' }
       }
     ]
@@ -126,10 +126,10 @@ export const constantRoutes = [
         meta: { title: '博文管理', icon: 'dashboard' }
       },
       {
-        path: '/role',
-        name: 'Role',
+        path: '/roles',
+        name: 'Roles',
         component: () => import('@/views/dashboard/index'),
-        meta: { title: '角色管理', icon: 'dashboard' }
+        meta: { title: '角色管理s', icon: 'dashboard' }
       }
     ]
   },
