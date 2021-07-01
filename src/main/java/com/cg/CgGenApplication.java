@@ -6,7 +6,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
 //扫描mybatis通用的mapper包
-@MapperScan({"com.cg.gen.mapper", "com.cg.system.mapper"})
+@MapperScan(basePackages = {"com.cg.gen.mapper", "com.cg.system.mapper"})
 public class CgGenApplication {
 
     public static void main(String[] args) {
