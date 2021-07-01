@@ -9,7 +9,7 @@ spring:
   datasource:
     type: com.zaxxer.hikari.HikariDataSource
     driver-class-name: com.mysql.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/code_gen?useUnicode=true&characterEncoding=UTF-8&autoReconnect=true&useSSL=false&serverTimezone=UTC
+    url: jdbc:mysql://localhost:3306/code_gen?useUnicode=true&characterEncoding=UTF-8&autoReconnect=true&useSSL=false&serverTimezone=Asia/Shanghai
     username: root
     password: root
     hikari:
@@ -21,6 +21,8 @@ spring:
       pool-name: DateSourceHikariCP
       max-lifetime: 1800000
       connection-test-query: SELECT 1
+  mvc:
+    dispatch-options-request: true
 
 
 mybatis:
