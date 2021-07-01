@@ -28,8 +28,8 @@
         from `cg_system_users`
         where
             <if test="paramsMap.keyword != null and paramsMap.keyword != ''">
-                `username` like concat('%',#{paramsMap.keyword},'%') or
-                `email` like concat('%',#{paramsMap.keyword},'%') and
+                (`username` like concat('%',#{paramsMap.keyword},'%') or
+                `email` like concat('%',#{paramsMap.keyword},'%')) and
             </if>
             `deleted` = 0
         order by cg_modified desc limit #{paramsMap.startNum}, #{paramsMap.pageSize}
@@ -40,8 +40,8 @@
         from `cg_system_users`
         where
             <if test="paramsMap.keyword != null and paramsMap.keyword != ''">
-                `username` like concat('%',#{paramsMap.keyword},'%') or
-                `email` like concat('%',#{paramsMap.keyword},'%') and
+                (`username` like concat('%',#{paramsMap.keyword},'%') or
+                `email` like concat('%',#{paramsMap.keyword},'%')) and
             </if>
             `deleted` = 0
     </select>

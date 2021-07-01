@@ -26,9 +26,9 @@
         from `cg_system_permissions`
         where
             <if test="paramsMap.keyword != null and paramsMap.keyword != ''">
-                `name` like concat('%',#{paramsMap.keyword},'%') or
+                (`name` like concat('%',#{paramsMap.keyword},'%') or
                 `url` like concat('%',#{paramsMap.keyword},'%') or
-                `permission_desc` like concat('%',#{paramsMap.keyword},'%') and
+                `permission_desc` like concat('%',#{paramsMap.keyword},'%')) and
             </if>
             `deleted` = 0
         order by cg_modified desc limit #{paramsMap.startNum}, #{paramsMap.pageSize}
@@ -39,9 +39,9 @@
         from `cg_system_permissions`
         where
             <if test="paramsMap.keyword != null and paramsMap.keyword != ''">
-                `name` like concat('%',#{paramsMap.keyword},'%') or
+                (`name` like concat('%',#{paramsMap.keyword},'%') or
                 `url` like concat('%',#{paramsMap.keyword},'%') or
-                `permission_desc` like concat('%',#{paramsMap.keyword},'%') and
+                `permission_desc` like concat('%',#{paramsMap.keyword},'%')) and
             </if>
             `deleted` = 0
     </select>
@@ -85,6 +85,9 @@
             </if>
             <if test="desc != null and desc != ''">
                 `permission_desc` = #{desc},
+            </if>
+            <if test="url != null and url != ''">
+                `url` = #{url},
             </if>
             <if test="deleted != null">
                 `deleted`=#{deleted},

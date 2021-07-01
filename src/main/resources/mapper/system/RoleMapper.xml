@@ -25,8 +25,8 @@
         from `cg_system_roles`
         where
             <if test="paramsMap.keyword != null and paramsMap.keyword != ''">
-                `role_name` like concat('%',#{paramsMap.keyword},'%') or
-                `role_desc` like concat('%',#{paramsMap.keyword},'%') and
+                (`role_name` like concat('%',#{paramsMap.keyword},'%') or
+                `role_desc` like concat('%',#{paramsMap.keyword},'%')) and
             </if>
             `deleted` = 0
         order by cg_modified desc limit #{paramsMap.startNum}, #{paramsMap.pageSize}
@@ -37,8 +37,8 @@
         from `cg_system_roles`
         where
             <if test="paramsMap.keyword != null and paramsMap.keyword != ''">
-                `role_name` like concat('%',#{paramsMap.keyword},'%') or
-                `role_desc` like concat('%',#{paramsMap.keyword},'%') and
+                (`role_name` like concat('%',#{paramsMap.keyword},'%') or
+                `role_desc` like concat('%',#{paramsMap.keyword},'%')) and
             </if>
             `deleted` = 0
     </select>
