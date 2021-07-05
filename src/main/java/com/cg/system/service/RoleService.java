@@ -1,6 +1,6 @@
 package com.cg.system.service;
 
-import com.cg.common.Constants;
+import com.cg.common.constants.Constants;
 import com.cg.common.PagedResult;
 import com.cg.common.Result;
 import com.cg.entity.pojo.system.Role;

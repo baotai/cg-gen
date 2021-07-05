@@ -1,6 +1,6 @@
 package com.cg.system.service;
 
-import com.cg.common.Constants;
+import com.cg.common.constants.Constants;
 import com.cg.common.PagedResult;
 import com.cg.common.Result;
 import com.cg.entity.pojo.system.User;
@@ -8,6 +8,7 @@ import com.cg.enums.DeletedStatus;
 import com.cg.system.mapper.UserMapper;
 import com.cg.utils.MD5Utils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -51,9 +52,7 @@ public class UserService {
         HashMap<String, Object> map = new HashMap<>();
         map.put("username", username);
 
-        User user = userMapper.findOne(map);
-
-        return addMask(user);
+        return userMapper.findOne(map);
     }
 
     @Transactional(propagation = Propagation.SUPPORTS)
@@ -107,8 +106,7 @@ public class UserService {
         }
 
         //生成盐,默认长度 16 位
-//        String salt = BCrypt.gensalt(16);
-        String salt = "root";
+        String salt = BCrypt.gensalt(16);
         String pwd = MD5Utils.encode(password, salt);
 
         Date date = new Date();
@@ -156,5 +154,14 @@ public class UserService {
             user.setPassword(mask).setSalt(mask);
         }
         return user;
+    }
+
+    public boolean checkPassword(User user, String password) {
+        if (user == null) return false;
+
+        String salt = user.getSalt();
+        String pwd = MD5Utils.encode(password, salt);
+
+        return user.getPassword().equals(pwd);
     }
 }

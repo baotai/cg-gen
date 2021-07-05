@@ -1,4 +1,4 @@
-package com.cg.common;
+package com.cg.common.constants;
 
 public interface Constants {
 
