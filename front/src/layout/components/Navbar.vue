@@ -5,7 +5,14 @@
     <breadcrumb class="breadcrumb-container" />
 
     <div class="right-menu">
-      <el-link :underline="false" target="_blank">Git</el-link>
+      <el-dropdown style="width: 91%;text-align: right;">
+        <i class="el-icon-setting" style="font-size: 22px;" />
+        <el-dropdown-menu slot="dropdown">
+          <el-dropdown-item>个人中心</el-dropdown-item>
+          <el-dropdown-item>修改密码</el-dropdown-item>
+          <i @click="doLogout"><el-dropdown-item>退出</el-dropdown-item></i>
+        </el-dropdown-menu>
+      </el-dropdown>
     </div>
   </div>
 </template>
@@ -31,8 +38,9 @@ export default {
       this.$store.dispatch('app/toggleSideBar')
     },
     doLogout() {
-      this.logout()
-      // this.$router.push(`/login?redirect=${this.$route.fullPath}`)
+      this.$store.dispatch('user/logout', this.loginForm).then(() => {
+        this.$router.replace({ path: '/login' })
+      })
     }
   }
 }
@@ -67,7 +75,8 @@ export default {
     float: right;
     height: 100%;
     line-height: 50px;
-    padding-right: 10px;
+    padding-right: 20px;
+    padding-top: 5px;
 
     &:focus {
       outline: none;

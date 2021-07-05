@@ -4,12 +4,7 @@
 import Vue from 'vue'
 import axios from 'axios'
 import ClipboardJS from 'clipboard'
-
-// 创建axios实例
-const client = axios.create({
-  baseURL: process.env.VUE_APP_BASE_API, // api 的 base_url
-  timeout: 60000 // 请求超时时间,60秒
-})
+import service from './request'
 
 Object.assign(Vue.prototype, {
   /**
@@ -21,9 +16,9 @@ Object.assign(Vue.prototype, {
    */
   post: function(uri, data, callback, errorCallback) {
     const that = this
-    client.post(uri, data).then(function(response) {
+    service.post(uri, data).then(function(response) {
       const resp = response.data
-      const code = resp.status
+      const code = response.status
       if (code === 200) { // 成功
         callback && callback.call(that, resp)
       } else {
@@ -37,9 +32,9 @@ Object.assign(Vue.prototype, {
   },
   get: function(uri, data, callback, errorCallback) {
     const that = this
-    client.get(uri, data).then(function (response) {
+    service.get(uri, data).then(function(response) {
       const resp = response.data
-      const code = resp.status
+      const code = response.status
       if (code === 200) { // 成功
         callback && callback.call(that, resp)
       } else {

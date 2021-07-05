@@ -35,6 +35,8 @@ Vue.use(ElementUI, { locale })
 
 Vue.config.productionTip = false
 
+Vue.prototype.$store = store
+
 import Moment from 'moment'
 Vue.prototype.$moment = Moment
 
